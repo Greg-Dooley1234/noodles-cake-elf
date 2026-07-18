@@ -980,6 +980,190 @@ function drawCrowd(){
   ctx.restore();
 }
 function drawStage(inFight){
+  if((game.stage||'festival')==='river')return drawStageRiver(inFight);
+  return drawStageFestival(inFight);
+}
+// ============================================================================
+//  STAGE 2 — "RIVERBEND": Chris's home turf. Golden-hour mountain trout
+//  stream: sunset sky, hazy peaks, pine banks, log cabin, sun-glitter river,
+//  jumping trout, fireflies, and a wooden dock as the fighting platform.
+// ============================================================================
+const RIV={
+  stars:Array.from({length:40},()=>({x:rnd(0,W),y:rnd(0,150),r:rnd(0.3,1.2),tw:rnd(0,7)})),
+  clouds:Array.from({length:4},(_,i)=>({x:rnd(0,W),y:60+i*44+rnd(-14,14),w:rnd(120,230),sp:rnd(2,6)})),
+  mtn1:Array.from({length:13},(_,i)=>({x:i*(W/12),y:268+Math.sin(i*2.7)*26+rnd(-10,10)})),
+  mtn2:Array.from({length:11},(_,i)=>({x:i*(W/10),y:315+Math.sin(i*1.9+2)*20+rnd(-8,8)})),
+  pines:[...Array.from({length:7},(_,i)=>({x:12+i*36+rnd(-8,8),h:rnd(60,110),side:0})),
+         ...Array.from({length:6},(_,i)=>({x:930-i*34+rnd(-8,8),h:rnd(55,100),side:1}))],
+  reeds:[...Array.from({length:7},(_,i)=>({x:14+i*13+rnd(-4,4),h:rnd(34,58),ph:rnd(0,7)})),
+         ...Array.from({length:7},(_,i)=>({x:946-i*13+rnd(-4,4),h:rnd(34,58),ph:rnd(0,7)}))],
+  fish:{next:4,start:-9,x:400,dir:1},
+};
+function drawStageRiver(inFight){
+  const HOR=340;                       // horizon line
+  // --- sunset sky ---
+  const sky=ctx.createLinearGradient(0,0,0,HOR+10);
+  sky.addColorStop(0,'#241a4e');sky.addColorStop(0.4,'#5e3260');sky.addColorStop(0.72,'#b85a48');sky.addColorStop(1,'#f2b25a');
+  ctx.fillStyle=sky;ctx.fillRect(0,0,W,HOR+10);
+  // early stars up top
+  for(const s of RIV.stars){ctx.globalAlpha=(0.25+0.4*Math.sin(T*2+s.tw)**2)*(1-s.y/170);
+    ctx.fillStyle='#ffe9d0';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill();}
+  ctx.globalAlpha=1;
+  // underlit drifting clouds
+  for(const c of RIV.clouds){
+    const cx2=((c.x+T*c.sp)%(W+300))-150;
+    const g=ctx.createLinearGradient(0,c.y-10,0,c.y+12);
+    g.addColorStop(0,'rgba(90,50,90,0.55)');g.addColorStop(1,'rgba(255,170,110,0.5)');
+    ctx.fillStyle=g;
+    ctx.beginPath();ctx.ellipse(cx2,c.y,c.w,13,0,0,7);
+    ctx.ellipse(cx2+c.w*0.4,c.y+5,c.w*0.55,9,0,0,7);ctx.fill();
+  }
+  // sun low on the water line
+  const SX=612,SY=316;
+  let g=ctx.createRadialGradient(SX,SY,4,SX,SY,120);
+  g.addColorStop(0,'rgba(255,240,190,0.9)');g.addColorStop(0.25,'rgba(255,190,110,0.45)');g.addColorStop(1,'rgba(255,150,80,0)');
+  ctx.fillStyle=g;ctx.fillRect(SX-120,SY-120,240,240);
+  ctx.fillStyle='#ffeeb8';ctx.beginPath();ctx.arc(SX,SY,24,0,7);ctx.fill();
+  // --- mountains (hazy far, darker near) ---
+  ctx.fillStyle='#8a4e66';
+  ctx.beginPath();ctx.moveTo(0,HOR);for(const p of RIV.mtn1)ctx.lineTo(p.x,p.y);ctx.lineTo(W,HOR);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#5a3054';
+  ctx.beginPath();ctx.moveTo(0,HOR+6);for(const p of RIV.mtn2)ctx.lineTo(p.x,p.y);ctx.lineTo(W,HOR+6);ctx.closePath();ctx.fill();
+  // --- river (behind the dock) with the sun's glitter path ---
+  const RY0=HOR, RY1=GROUND-30;
+  const rg=ctx.createLinearGradient(0,RY0,0,RY1);
+  rg.addColorStop(0,'#c97a58');rg.addColorStop(0.35,'#7a4468');rg.addColorStop(1,'#33245c');
+  ctx.fillStyle=rg;ctx.fillRect(0,RY0,W,RY1-RY0);
+  // flow lines drifting
+  for(let i=0;i<26;i++){
+    const ry=RY0+8+i*((RY1-RY0-12)/26), sp=14+i*2.2;
+    const off=((i*97)+T*sp)%(W+80)-40;
+    const nearSun=Math.abs(off-SX)<140-i*2;
+    ctx.globalAlpha=0.10+0.10*Math.sin(i*1.7+T*1.3);
+    ctx.strokeStyle=nearSun?'#ffd9a0':'#c9a0d8';
+    ctx.lineWidth=1+i*0.05;
+    ctx.beginPath();ctx.moveTo(off-26-i,ry);ctx.lineTo(off+26+i,ry);ctx.stroke();
+  }
+  ctx.globalAlpha=1;
+  // sun glitter column
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  for(let i=0;i<18;i++){
+    const gy=RY0+6+i*((RY1-RY0)/18);
+    const wob=Math.sin(T*3+i*1.9)*8, ww=(10+i*2.4)*(0.7+0.3*Math.sin(T*5+i));
+    ctx.globalAlpha=0.16*(1-i/22);
+    ctx.fillStyle='#ffdf9e';
+    ctx.fillRect(SX-ww/2+wob,gy,ww,2.4);
+  }
+  ctx.restore();ctx.globalAlpha=1;
+  // --- pine banks ---
+  for(const p of RIV.pines){
+    const bx=p.x, by=HOR+26+(p.side?4:0);
+    ctx.fillStyle=p.side?'#1c1234':'#221636';
+    for(let t2=0;t2<3;t2++){
+      const ww=p.h*(0.55-t2*0.13), yy=by-p.h*t2*0.3;
+      ctx.beginPath();ctx.moveTo(bx-ww,yy);ctx.lineTo(bx,yy-p.h*0.55);ctx.lineTo(bx+ww,yy);ctx.closePath();ctx.fill();
+    }
+    ctx.fillRect(bx-3,by-4,6,10);
+  }
+  // --- log cabin (right bank) ---
+  (function(){
+    const cx2=812,cy=HOR+18;
+    ctx.fillStyle='#2c1a2e';ctx.fillRect(cx2-52,cy-38,104,42);
+    ctx.beginPath();ctx.moveTo(cx2-62,cy-38);ctx.lineTo(cx2,cy-64);ctx.lineTo(cx2+62,cy-38);ctx.closePath();
+    ctx.fillStyle='#38203a';ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,0.3)';ctx.lineWidth=1;
+    for(let i=1;i<5;i++){ctx.beginPath();ctx.moveTo(cx2-52,cy-38+i*8);ctx.lineTo(cx2+52,cy-38+i*8);ctx.stroke();}
+    ctx.fillStyle='#ffb84a';ctx.shadowColor='#ff9a2e';ctx.shadowBlur=8;
+    ctx.fillRect(cx2-34,cy-26,13,13);ctx.fillRect(cx2+20,cy-26,13,13);
+    ctx.shadowBlur=0;
+    ctx.strokeStyle='#38203a';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(cx2+38,cy-58);ctx.lineTo(cx2+38,cy-72);ctx.stroke();
+    for(let i=0;i<3;i++){const sp=(T*0.5+i*0.8)%2.4;
+      ctx.globalAlpha=0.25*(1-sp/2.4);ctx.fillStyle='#c9c0d8';
+      ctx.beginPath();ctx.arc(cx2+38+Math.sin(T+i*2)*4+sp*4,cy-76-sp*16,3+sp*2.6,0,7);ctx.fill();}
+    ctx.globalAlpha=1;
+  })();
+  // --- heron on a rock (left) ---
+  (function(){
+    const hx=150,hy=RY1-6;
+    ctx.fillStyle='#221430';
+    ctx.beginPath();ctx.ellipse(hx,hy,16,7,0,0,7);ctx.fill();          // rock
+    const bob=Math.sin(T*1.4)*1.2;
+    ctx.strokeStyle='#241838';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(hx-2,hy-2);ctx.lineTo(hx-2,hy-14);ctx.moveTo(hx+3,hy-2);ctx.lineTo(hx+3,hy-13);ctx.stroke();
+    ctx.fillStyle='#241838';
+    ctx.beginPath();ctx.ellipse(hx,hy-19,9,6,0.15,0,7);ctx.fill();     // body
+    ctx.strokeStyle='#241838';ctx.lineWidth=2.4;
+    ctx.beginPath();ctx.moveTo(hx+6,hy-22);ctx.quadraticCurveTo(hx+13,hy-26,hx+12,hy-33+bob);ctx.stroke(); // neck
+    ctx.beginPath();ctx.ellipse(hx+12,hy-34+bob,3.4,2.6,0,0,7);ctx.fillStyle='#241838';ctx.fill();
+    ctx.strokeStyle='#e8a54a';ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(hx+15,hy-34+bob);ctx.lineTo(hx+22,hy-32+bob);ctx.stroke();                 // beak
+  })();
+  // --- jumping trout ---
+  (function(){
+    const F=RIV.fish;
+    if(T>F.next){F.start=T;F.x=rnd(220,540);F.dir=Math.random()<0.5?-1:1;F.next=T+rnd(6,13);}
+    const p=(T-F.start)/0.9;
+    if(p>0&&p<1){
+      const fx=F.x+F.dir*70*p, fy=RY1-14-Math.sin(p*Math.PI)*40;
+      const ang=Math.atan2(-Math.cos(p*Math.PI)*40*Math.PI*(F.dir),70)* (F.dir>0?1:-1);
+      ctx.save();ctx.translate(fx,fy);ctx.rotate(F.dir>0?ang:-ang);if(F.dir<0)ctx.scale(-1,1);
+      ctx.fillStyle='#b9c9c4';ctx.beginPath();ctx.ellipse(0,0,11,4.5,0,0,7);ctx.fill();
+      ctx.fillStyle='#7fa0b8';ctx.beginPath();ctx.moveTo(-9,0);ctx.lineTo(-15,-4);ctx.lineTo(-15,4);ctx.closePath();ctx.fill();
+      ctx.fillStyle='rgba(232,96,122,0.6)';ctx.fillRect(-4,-1,9,2);
+      ctx.restore();
+      if((p<0.12||p>0.88)&&Math.random()<0.5)
+        spawn({type:'glow',x:fx,y:RY1-10,vx:rnd(-30,30),vy:rnd(-60,-10),life:0.4,size:rnd(1.5,3),col:'#bcd8ff',g:200,layer:0});
+    }
+  })();
+  // --- warm haze in front of the river ---
+  const fog=ctx.createLinearGradient(0,RY1-40,0,GROUND);
+  fog.addColorStop(0,'rgba(255,170,100,0)');fog.addColorStop(0.6,'rgba(255,170,100,0.10)');fog.addColorStop(1,'rgba(120,70,110,0)');
+  ctx.fillStyle=fog;ctx.fillRect(0,RY1-40,W,GROUND-RY1+40);
+  // --- wooden dock (fighting platform) ---
+  const dg=ctx.createLinearGradient(0,GROUND-32,0,GROUND+8);
+  dg.addColorStop(0,'#7a4e2c');dg.addColorStop(0.5,'#5e3a20');dg.addColorStop(1,'#3c2414');
+  ctx.fillStyle=dg;ctx.fillRect(0,GROUND-32,W,40);
+  ctx.strokeStyle='rgba(30,16,8,0.5)';ctx.lineWidth=1.4;
+  for(let i=0;i<4;i++){const y=GROUND-30+i*11;
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.strokeStyle='rgba(30,16,8,0.32)';
+  for(let x=-20;x<W+40;x+=64){const o=((x/64)%2)*22;
+    ctx.beginPath();ctx.moveTo(x+o,GROUND-30);ctx.lineTo(x+o,GROUND+6);ctx.stroke();
+    ctx.fillStyle='rgba(20,10,6,0.55)';
+    ctx.beginPath();ctx.arc(x+o+8,GROUND-24,1.2,0,7);ctx.arc(x+o+8,GROUND-4,1.2,0,7);ctx.fill();}
+  ctx.fillStyle='rgba(255,190,120,0.14)';ctx.fillRect(0,GROUND-32,W,2);   // sun kiss on the edge
+  // mooring posts + rope
+  for(const px of [26,934]){
+    ctx.fillStyle='#3c2414';ctx.fillRect(px-6,GROUND-58,12,34);
+    ctx.fillStyle='#5e3a20';ctx.fillRect(px-6,GROUND-58,12,5);
+    ctx.strokeStyle='#8a6a42';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(px,GROUND-52);
+    ctx.quadraticCurveTo(px+(px<W/2?60:-60),GROUND-38,px+(px<W/2?120:-120),GROUND-46);ctx.stroke();
+  }
+  // --- water below the dock (fighters reflect here) ---
+  const wg=ctx.createLinearGradient(0,GROUND+8,0,H);
+  wg.addColorStop(0,'#3a2c62');wg.addColorStop(1,'#120e26');
+  ctx.fillStyle=wg;ctx.fillRect(0,GROUND+8,W,H-GROUND-8);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  for(let i=0;i<8;i++){
+    const wy=GROUND+16+i*8, off=((i*131)+T*(10+i*3))%(W+60)-30;
+    ctx.globalAlpha=0.06+0.05*Math.sin(T*2+i*2);
+    ctx.fillStyle=Math.abs(off-SX)<160?'#ffd9a0':'#9a8ad8';
+    ctx.fillRect(off-30,wy,60+i*6,1.6);
+  }
+  ctx.restore();ctx.globalAlpha=1;
+  // --- cattail reeds framing the dock ---
+  for(const r2 of RIV.reeds){
+    const sw=Math.sin(T*1.6+r2.ph)*3;
+    ctx.strokeStyle='#2c3a1e';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(r2.x,GROUND+4);
+    ctx.quadraticCurveTo(r2.x+sw*0.4,GROUND+4-r2.h*0.6,r2.x+sw,GROUND+4-r2.h);ctx.stroke();
+    ctx.fillStyle='#5e3a20';
+    ctx.save();ctx.translate(r2.x+sw,GROUND+2-r2.h);ctx.rotate(sw*0.04);
+    ctx.beginPath();ctx.ellipse(0,0,2.6,8,0,0,7);ctx.fill();ctx.restore();
+  }
+}
+function drawStageFestival(inFight){
   // sky
   const sky=ctx.createLinearGradient(0,0,0,H);
   sky.addColorStop(0,'#0a1240');sky.addColorStop(0.45,'#1b1850');sky.addColorStop(0.72,'#3a1c48');sky.addColorStop(1,'#1e0f1c');
@@ -1064,6 +1248,13 @@ function drawStage(inFight){
 }
 // falling ambient confetti
 function ambientConfetti(dt){
+  if((game.stage||'festival')==='river'){
+    // fireflies drifting over the water
+    if(Math.random()<dt*2.2)spawn({type:'glow',x:rnd(0,W),y:rnd(H*0.45,H*0.92),
+      vx:rnd(-14,14),vy:rnd(-16,-4),life:rnd(2.5,5),size:rnd(1.4,2.8),
+      col:Math.random()<0.7?'#d8ff8a':'#ffe9a0',alpha:0.8,layer:0});
+    return;
+  }
   if(Math.random()<dt*4.5)spawn({type:'confetti',x:rnd(0,W),y:-10,vx:rnd(-20,20),vy:rnd(35,80),
     life:rnd(4,7),size:rnd(4,7),spin:rnd(2,6),col:['#ff5da2','#ffd24a','#6dffb0','#6db9ff','#ff8a4a'][Math.floor(rnd(0,5))],g:6,layer:0});
 }
@@ -2361,6 +2552,8 @@ function startMatch(){
     if(p.id==='cake'){p.cloth='#4a4a6e';p.clothD='#35354f';}
     game.p2.pal=p;
   }
+  // Chris brings the fight to his river; everyone else fights at the festival
+  game.stage=(game.p1.spec.id==='chris'||game.p2.spec.id==='chris')?'river':'festival';
   game.wins=[0,0];game.round=1;
   startRound();
 }
@@ -2639,11 +2832,17 @@ function drawFighterLit(f){
   ctx=OCTX;
   drawFighter(f);
   OCTX.save();OCTX.globalCompositeOperation='source-atop';
-  // festival key lights: gold spill from the noodle stand, pink from the sweet stall
+  // key lights: festival = gold/pink neon; river = warm sun left, cool dusk right
   const lg=OCTX.createLinearGradient(0,0,W,0);
+  if((game.stage||'festival')==='river'){
+    lg.addColorStop(0,'rgba(255,200,120,0.20)');
+    lg.addColorStop(0.55,'rgba(255,150,90,0.07)');
+    lg.addColorStop(1,'rgba(120,110,220,0.15)');
+  }else{
   lg.addColorStop(0,'rgba(255,196,110,0.17)');
   lg.addColorStop(0.5,'rgba(110,60,140,0.05)');
   lg.addColorStop(1,'rgba(255,110,190,0.17)');
+  }
   OCTX.fillStyle=lg;OCTX.fillRect(0,0,W,H);
   // grounding: soft shade rising from the feet
   const vg=OCTX.createLinearGradient(0,f.y-200,0,f.y+8);
@@ -3061,7 +3260,7 @@ function serializeSnap(){
     s.p1=serFighter(game.p1); s.p2=serFighter(game.p2);
     s.mirror=(game.p1.spec.id===game.p2.spec.id);
     s.pr=projs.map(p=>({ty:p.type,x:p.x,y:p.y,vx:p.vx,vy:p.vy||0,t:p.t,o:p.owner.slot,low:!!p.low}));
-    s.timer=game.timer;s.ph=game.fightPhase;s.pt=game.phaseT;s.hs=game.hitstop;s.ks=game.koSlow;
+    s.timer=game.timer;s.ph=game.fightPhase;s.pt=game.phaseT;s.hs=game.hitstop;s.ks=game.koSlow;s.stg=game.stage;
     s.sf=game.superFreeze?{t:game.superFreeze.t,o:game.superFreeze.owner.slot}:null;
     s.rw=game.roundWinner?game.roundWinner.slot:null;
     s.an=game.announce?{txt:game.announce.txt,t:game.announce.t,life:game.announce.life,col:game.announce.col,size:game.announce.size}:null;
@@ -3089,7 +3288,7 @@ function applySnap(s){
     applyFighter(game.p1,s.p1); applyFighter(game.p2,s.p2);
     projs.length=0;
     for(const p of s.pr)projs.push({owner:p.o===0?game.p1:game.p2,type:p.ty,x:p.x,y:p.y,vx:p.vx,vy:p.vy,t:p.t,low:p.low,dead:false});
-    game.timer=s.timer;game.fightPhase=s.ph;game.phaseT=s.pt;game.hitstop=s.hs;game.koSlow=s.ks;
+    game.timer=s.timer;game.fightPhase=s.ph;game.phaseT=s.pt;game.hitstop=s.hs;game.koSlow=s.ks;game.stage=s.stg||'festival';
     game.superFreeze=s.sf?{t:s.sf.t,owner:s.sf.o===0?game.p1:game.p2}:null;
     game.roundWinner=s.rw==null?null:(s.rw===0?game.p1:game.p2);
     game.announce=s.an?Object.assign({},s.an):null;
@@ -3137,6 +3336,7 @@ function buildOnlineUI(){
   card.appendChild(status);
   const back=mkBtn('◀ Back',()=>backToTitle()); back.style.marginTop='14px';
   card.appendChild(back);
+  document.body.appendChild(root);   // (was missing — the panel was never attached, so PLAY ONLINE showed nothing)
   onlineUI={root,card,body,status,back};
 }
 function mkBtn(label,fn,col){
