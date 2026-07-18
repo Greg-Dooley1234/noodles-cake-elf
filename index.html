@@ -1539,6 +1539,8 @@ const ANIMS={
 // ---- fighter drawing ----
 let FXMUTE=false; // true during re-draw passes (impact flash) so FX don't double-spawn
 // choose which cut sprite fits the fighter's current state
+// frames-per-phase for special-move sequences: [windup, active, recover]
+const SP_PHASE={chris:{sp1:[2,1,2],sp2:[2,2,2],sp3:[6,6,6],super:[2,2,2]}};
 function spriteFor(f){
   const st=f.state;
   if(st==='ko'){ if(!f.onGround)return 'launch'; return f.koT>1.0?'ko':'down'; }
@@ -1551,13 +1553,26 @@ function spriteFor(f){
   if(st==='attack'&&f.move){
     const mv=f.move;
     if(mv.special||mv.isSuper){
-      // per-move animation sequences (e.g. Chris's 5-6 frame specials)
+      // per-move animation sequences (e.g. Chris's specials)
       const A=POSEANIMN[f.spec.id];
       if(A&&A.sp){
         const slot=Object.keys(f.moves).find(k=>f.moves[k]===mv);
         const n=A.sp[slot];
-        if(n){const dur=mv.startup+mv.active+mv.recover;
-          return slot+'f'+Math.min(n-1,Math.floor(f.moveT/dur*n));}
+        if(n){
+          // phase-aligned playback: art rows map onto startup/active/recover
+          // (FISH SLAP: PICKUP=windup, COMBO=the hits, FINISH=recovery)
+          const PH=(SP_PHASE[f.spec.id]||{})[slot];
+          if(PH){
+            const[nw,na,nr]=PH,t=f.moveT;
+            let idx;
+            if(t<mv.startup) idx=Math.min(nw-1,Math.floor(t/mv.startup*nw));
+            else if(t<mv.startup+mv.active) idx=nw+Math.min(na-1,Math.floor((t-mv.startup)/mv.active*na));
+            else idx=nw+na+Math.min(nr-1,Math.floor((t-mv.startup-mv.active)/mv.recover*nr));
+            return slot+'f'+Math.min(n-1,idx);
+          }
+          const dur=mv.startup+mv.active+mv.recover;
+          return slot+'f'+Math.min(n-1,Math.floor(f.moveT/dur*n));
+        }
       }
     }
     if(mv.isSuper) return 'super';
@@ -2048,7 +2063,7 @@ function mkMoves(id){
     sp1:{name:'TROUT TORPEDO',anim:'shoot',dmg:0,startup:.2,active:.08,recover:.3,range:0,special:true,airOk:true,meterGain:7,
       onActive(f){const air=!f.onGround;shootProj(f,{type:'fish',vx:520,vy:air?260:0,dmg:66,kx:200,stun:.36,y:air?-44:-58});SFX.shoot();}},
     sp2:{name:'RIVER WHIP',anim:'ram',fx:'frost',dmg:92,startup:.18,active:.22,recover:.26,range:120,kx:300,ky:-200,stun:.46,special:true,chip:true,lunge:200,meterGain:10},
-    sp3:{name:'FISH SLAP',anim:'slam',dmg:42,startup:.5,active:.72,recover:.48,range:98,kx:130,stun:.45,special:true,chip:true,meterGain:10,
+    sp3:{name:'FISH SLAP',anim:'slam',dmg:42,startup:.66,active:.78,recover:.6,range:98,kx:130,stun:.45,special:true,chip:true,meterGain:10,
       multi:{interval:.24},finalFrac:.55,lastKx:380,lastKy:-360,knockdown:true},
     super:{name:'PERFECT CAST',anim:'shoot',dmg:0,startup:.4,active:.4,recover:.5,range:0,special:true,isSuper:true,
       onActive(f){const o=other(f);for(let i=0;i<9;i++){
