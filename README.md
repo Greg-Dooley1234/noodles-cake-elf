@@ -30,9 +30,13 @@ The pad layout is fixed and isn't rebindable, but it drives whatever keys each
 player is bound to — so rebinding on the CONTROLS screen carries over to the pad.
 
 ### Mobile
-On-screen controls (d-pad + LIGHT/HEAVY/SPEC/SUPER) are available from the title
-screen on, not just during fights, so the whole game is playable by touch. Outside
-a fight the light button is labelled **OK** and acts as confirm.
+The whole game is playable by touch, from the title screen on. The **left half of
+the screen is a floating joystick**: touch anywhere and drag — right/left to walk,
+flick up to jump (diagonals give jump-forward), down to crouch, hold back to
+block, double-flick to dash. A quick tap passes through to whatever is under it
+(menu items, fighter cards), so menus stay tappable. The fight buttons
+(LIGHT/HEAVY/SPEC/SUPER) stay on the right; outside a fight the light button is
+labelled **OK** and acts as confirm.
 
 - **⛶** top-right toggles fullscreen; the first tap anywhere also requests it.
 - Fullscreen removes the browser chrome on Android and desktop. **iOS Safari
