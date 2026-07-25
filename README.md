@@ -29,6 +29,18 @@ is P2 — a second pad is also how P2 joins character select.
 The pad layout is fixed and isn't rebindable, but it drives whatever keys each
 player is bound to — so rebinding on the CONTROLS screen carries over to the pad.
 
+### Mobile
+On-screen controls (d-pad + LIGHT/HEAVY/SPEC/SUPER) are available from the title
+screen on, not just during fights, so the whole game is playable by touch. Outside
+a fight the light button is labelled **OK** and acts as confirm.
+
+- **⛶** top-right toggles fullscreen; the first tap anywhere also requests it.
+- Fullscreen removes the browser chrome on Android and desktop. **iOS Safari
+  doesn't allow fullscreen for non-video elements** — there, use *Share → Add to
+  Home Screen* and launch from the icon to get the same chrome-free result.
+- Landscape only. Portrait shows a "rotate your device" prompt, since the stage
+  is 16:9 and unplayable in portrait.
+
 ## Updating
 Replace `index.html` with a newer build and re-deploy (Vercel/Pages auto-update
 on push; or re-drag the file if you upload through the website).
