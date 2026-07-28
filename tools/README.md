@@ -90,6 +90,7 @@ obvious from the config.
 
 ```bash
 python3 tools/add_fighter.py build  tools/fighters/yourfighter.json
+python3 tools/add_fighter.py scale  tools/fighters/yourfighter.json   # size check
 python3 tools/add_fighter.py verify yourfighter
 ```
 
@@ -126,7 +127,35 @@ frame the centroid jumps 100px+ and the character appears to teleport sideways.
 Verify by eye: in the probe montages the fighter should sit at a consistent
 point across the frames of one special.
 
-### 2. Scale: measure head width, never bbox height
+### 2a. Cells where the generator shrank the character (`cell_scale`)
+
+**This is the most common visual bug and it needs your eyes.** When a cell has to
+fit a tower, a building or an explosion into the same square frame, the image
+generator draws the *character* smaller to make room. Nothing downstream can
+tell that apart from the character simply being further away, so the fighter
+appears to shrink and grow mid-move.
+
+```bash
+python3 tools/add_fighter.py scale tools/fighters/yourfighter.json
+```
+
+That renders every pose at engine scale over a translucent ghost of the idle
+pose. Compare heads: if the pose's head is smaller than the ghost's, it needs a
+correction. Two-thirds size → about `1.5`.
+
+```json
+"cell_scale": { "superf1": 1.60, "superf2": 2.00, "sp2f0": 1.22 }
+```
+
+Re-run `scale` afterwards to confirm the heads line up.
+
+Why it is not automatic: I tried. Head-width detection is thrown by raised arms,
+beards and hands; body-area and body-height both call a crouch, a tuck or a
+mid-air pose "small" when it is perfectly correct, and auto-correcting those
+would inflate the fighter absurdly. A wrong automatic correction is worse than
+none, so the tool shows you the problem and takes your number.
+
+### 2b. Scale: measure head width, never bbox height
 
 Bbox height varies 15%+ with stance — a fighting crouch is genuinely shorter
 than a straight stand. Twice I "corrected" a scale difference that did not

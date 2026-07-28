@@ -1,0 +1,275 @@
+{
+  "_comment": "MATT \u2014 the architect. Zoner/summoner: hologram bolts, wireframe towers, demolition. Two unique sheets (the '-1' file is a byte-identical duplicate, so it is not listed).",
+  "id": "matt",
+  "green_costume": false,
+  "anchor_mode": "dark",
+  "sheet_rows": 3,
+  "sheets": {
+    "A": "assets/Matt/f6e417be-de92-4921-bf6b-bc045ad24146.png",
+    "B": "assets/Matt/bf6d79bf-d0a7-49cf-a268-868bd9d9fc2f.png"
+  },
+  "card": "assets/Matt/31a898c1-1a90-4e19-b414-f92edaa527bb.png",
+  "stage": "assets/Matt/248c3844-71b5-49d0-9bf9-4e76797fa8b9.png",
+  "finish": "assets/Matt/4a0d6d1b-4561-41eb-a7f4-ac97d59a953a.png",
+  "poses": {
+    "idle0": [
+      "B",
+      2,
+      5
+    ],
+    "idle1": [
+      "B",
+      2,
+      1
+    ],
+    "idle2": [
+      "A",
+      2,
+      6
+    ],
+    "walk0": [
+      "B",
+      0,
+      1
+    ],
+    "walk1": [
+      "B",
+      0,
+      0
+    ],
+    "walk2": [
+      "B",
+      0,
+      3
+    ],
+    "walk3": [
+      "B",
+      2,
+      1
+    ],
+    "crouch": [
+      "B",
+      0,
+      2
+    ],
+    "block": [
+      "A",
+      0,
+      2
+    ],
+    "blockLow": [
+      "A",
+      1,
+      1
+    ],
+    "jumpUp": [
+      "A",
+      0,
+      4
+    ],
+    "jumpDn": [
+      "A",
+      1,
+      2
+    ],
+    "atkL": [
+      "A",
+      0,
+      1
+    ],
+    "atkH": [
+      "B",
+      1,
+      4
+    ],
+    "clow": [
+      "A",
+      2,
+      3
+    ],
+    "atkA": [
+      "A",
+      1,
+      3
+    ],
+    "hit": [
+      "A",
+      2,
+      1
+    ],
+    "launch": [
+      "A",
+      1,
+      2
+    ],
+    "down": [
+      "A",
+      1,
+      1
+    ],
+    "ko": [
+      "B",
+      2,
+      2
+    ],
+    "win": [
+      "A",
+      2,
+      5
+    ],
+    "spWind": [
+      "B",
+      0,
+      2
+    ],
+    "spActive": [
+      "A",
+      0,
+      0
+    ],
+    "sp1f0": [
+      "B",
+      0,
+      2
+    ],
+    "sp1f1": [
+      "A",
+      0,
+      0
+    ],
+    "sp1f2": [
+      "B",
+      0,
+      4
+    ],
+    "sp2f0": [
+      "B",
+      1,
+      0
+    ],
+    "sp2f1": [
+      "A",
+      0,
+      3
+    ],
+    "sp2f2": [
+      "B",
+      1,
+      1
+    ],
+    "sp3f0": [
+      "B",
+      0,
+      5
+    ],
+    "sp3f1": [
+      "B",
+      1,
+      5
+    ],
+    "sp3f2": [
+      "B",
+      2,
+      0
+    ],
+    "sp4f0": [
+      "A",
+      0,
+      4
+    ],
+    "sp4f1": [
+      "B",
+      1,
+      4
+    ],
+    "sp4f2": [
+      "A",
+      1,
+      2
+    ],
+    "superf0": [
+      "B",
+      0,
+      5
+    ],
+    "superf1": [
+      "B",
+      1,
+      1
+    ],
+    "superf2": [
+      "B",
+      1,
+      2
+    ],
+    "superf3": [
+      "A",
+      1,
+      4
+    ],
+    "superf4": [
+      "B",
+      2,
+      3
+    ],
+    "super": [
+      "B",
+      1,
+      2
+    ]
+  },
+  "anim": {
+    "walk": 4,
+    "idle": 3,
+    "sp": {
+      "sp1": 3,
+      "sp2": 3,
+      "sp3": 3,
+      "sp4": 3,
+      "super": 5
+    }
+  },
+  "sp_phase": {
+    "sp1": [
+      1,
+      1,
+      1
+    ],
+    "sp2": [
+      1,
+      1,
+      1
+    ],
+    "sp3": [
+      1,
+      1,
+      1
+    ],
+    "sp4": [
+      1,
+      1,
+      1
+    ],
+    "super": [
+      2,
+      2,
+      1
+    ]
+  },
+  "chars": "matt:{\n    id:'matt',name:'MATT',title:'The Master Plan',\n    skin:'#e8bd97',skinD:'#c49470',hair:'#6b4526',cloth:'#9a6636',clothD:'#6d4522',\n    accent:'#2f3a4a',glow:'#3fd8ff',glow2:'#7affd4',iris:'#4a6a5a',voice:0.96,\n    leg1:45,leg2:45,arm1:33,arm2:33,torso:55,headR:16,limbW:14.5,torsoW:22,hipH:82,\n    speed:236,jumpV:650,hp:1060,weight:1.12,\n    bob:2.2,stance:21,\n  },",
+  "moves": "    light:{name:'Stylus Jab',anim:'jab',dmg:35,startup:.06,active:.07,recover:.12,range:66,kx:130,stun:.27,meterGain:5},\n    heavy:{name:'Projector Swing',anim:'kick',dmg:78,startup:.14,active:.11,recover:.22,range:100,kx:250,stun:.42,meterGain:8},\n    clight:{name:'Site Survey',anim:'low',dmg:40,startup:.08,active:.08,recover:.15,range:82,kx:115,stun:.29,low:true,meterGain:5},\n    air:{name:'Drafting Arc',anim:'air',dmg:70,startup:.08,active:.2,recover:.13,range:74,kx:185,stun:.35,overhead:true,meterGain:6},\n    sp1:{name:'BLUEPRINT BOLT',anim:'shoot',dmg:0,startup:.18,active:.07,recover:.26,range:0,special:true,airOk:true,meterGain:7,\n      onActive(f){const air=!f.onGround;shootProj(f,{type:'bprint',vx:600,vy:air?250:0,dmg:60,kx:180,stun:.34,y:air?-44:-58});SFX.shoot();}},\n    sp2:{name:'TOWER RAISE',anim:'slam',dmg:92,startup:.28,active:.16,recover:.34,range:112,kx:150,ky:-430,stun:.55,special:true,chip:true,\n      knockdown:true,meterGain:10,\n      onActive(f){mattTower(f);}},\n    sp3:{name:'DEMOLITION',anim:'slam',dmg:96,startup:.24,active:.14,recover:.36,range:104,kx:270,ky:-230,stun:.55,special:true,chip:true,\n      low:true,knockdown:true,meterGain:10,\n      onActive(f){addShake(10,.34);groundDust(f.x+f.facing*74,16,1.2);\n        burst(f.x+f.facing*80,GROUND-30,10,i=>({type:'shard',x:f.x+f.facing*80,y:GROUND-30-rnd(0,60),a:rnd(0,7),\n          vx:f.facing*rnd(90,300),vy:rnd(-260,-60),life:rnd(.3,.6),size:rnd(14,34),col:i%2?'#cbd8e6':'#ffb35c',g:520,layer:1}));\n        SFX.hitH();}},\n    sp4:{name:'SCAFFOLD RISE',anim:'straight',fx:'pulse',dmg:84,startup:.09,active:.16,recover:.32,range:80,kx:120,ky:-455,stun:.52,special:true,chip:true,invuln:.2,knockdown:true,meterGain:9},\n    super:{name:'MASTER PLAN',anim:'volley',dmg:0,startup:.44,active:.34,recover:.5,range:0,special:true,isSuper:true,\n      onActive(f){mattMasterPlan(f);}},",
+  "callouts": "{ 'BLUEPRINT BOLT':\"Drawn to scale!\", 'TOWER RAISE':\"Going up!\", 'DEMOLITION':\"Tear it down!\", 'SCAFFOLD RISE':\"Scaffold up!\",\n    super:[\"Master plan!\",\"Signed and sealed!\"], win:[\"Built to spec!\",\"Snagging complete!\",\"Handover.\"] }",
+  "theme": "{bpm:98,swing:0.06,drums:'four',pad:'airy',lead:'pluck',\n    roots:[43.65,49,55,65.41],\n    chords:[[349.23,440,523.25],[392,493.88,587.33],[440,523.25,659.25],[523.25,659.25,783.99]],\n    melA:[[0,523.25],[4,659.25],[8,587.33],[12,523.25],[16,587.33],[20,698.46],[24,659.25],[28,587.33]],\n    melB:[[0,659.25],[4,783.99],[8,880],[12,783.99],[16,698.46],[20,659.25],[24,587.33],[28,523.25]]}",
+  "extra_js": "// ---------- MATT: holographic architecture ----------\n// Scenes are driven off the global clock T (which always advances) rather than\n// an accumulated dt, so they self-expire even through super-freeze/hitstop.\nfunction mattTower(f){\n  const d=f.facing;\n  game.mattTower={t0:T,life:0.9,x:f.x+d*112,dir:d};\n  addShake(8,.3); SFX.hitH();\n  for(let i=0;i<14;i++){\n    spawn({type:'shard',x:f.x+d*112+rnd(-26,26),y:GROUND-rnd(0,150),a:rnd(0,7),\n      vx:rnd(-40,40),vy:-rnd(120,420),life:rnd(.35,.7),size:rnd(12,30),\n      col:i%2?'#3fd8ff':'#7affd4',layer:1});\n  }\n}\nfunction drawMattTower(){\n  const S=game.mattTower; if(!S)return;\n  const k=(T-S.t0)/S.life;\n  if(k>=1){ game.mattTower=null; return; }\n  const h=340*Math.min(1,k*2.4), a=Math.min(1,(1-k)*2.2);\n  ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=a*0.85;\n  ctx.strokeStyle='#3fd8ff'; ctx.lineWidth=2; ctx.shadowColor='#3fd8ff'; ctx.shadowBlur=12;\n  const w=74, x=S.x-w/2, base=GROUND;\n  for(let i=0;i<7;i++){ const y=base-h*(i/6);\n    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+w,y); ctx.stroke(); }\n  ctx.beginPath(); ctx.moveTo(x,base); ctx.lineTo(x,base-h);\n  ctx.moveTo(x+w,base); ctx.lineTo(x+w,base-h); ctx.stroke();\n  ctx.globalAlpha=a*0.30; ctx.fillStyle='#3fd8ff';\n  ctx.fillRect(x,base-h,w,h);\n  ctx.restore();\n}\nfunction mattMasterPlan(f){\n  const o=other(f), d=Math.sign(o.x-f.x)||f.facing;\n  game.mattPlan={t0:T,life:1.6,dir:d};\n  addFlash('#dffaff',.45); addShake(11,.45); SFX.superGo();\n  for(let i=0;i<9;i++){\n    projs.push({owner:f,type:'bprint',x:f.x+d*44,y:f.y-40-rnd(0,96),vx:(430+rnd(0,170))*d,\n      vy:rnd(-40,40),dmg:32,kx:150,ky:-180,stun:.4,t:0,dead:false,low:false});\n  }\n}\nfunction drawMattPlanScene(){\n  const S=game.mattPlan; if(!S)return;\n  const k=(T-S.t0)/S.life;\n  if(k>=1){ game.mattPlan=null; return; }\n  const a=Math.sin(Math.min(1,k)*Math.PI);\n  ctx.save(); ctx.globalCompositeOperation='lighter';\n  // drafting grid sweeps across the arena\n  ctx.globalAlpha=a*0.34; ctx.strokeStyle='#3fd8ff'; ctx.lineWidth=1;\n  const off=(T*90)%56;\n  for(let x=-56+off;x<W;x+=56){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }\n  for(let y=(T*40)%56;y<H;y+=56){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }\n  // rising skyline of wireframe towers\n  ctx.globalAlpha=a*0.6; ctx.lineWidth=2; ctx.shadowColor='#3fd8ff'; ctx.shadowBlur=10;\n  for(let i=0;i<7;i++){\n    const bx=70+i*130, bw=70, prog=clamp(k*2.1-i*0.12,0,1);\n    if(prog<=0)continue;\n    const bh=(90+((i*37)%120))*prog;\n    ctx.strokeRect(bx,GROUND-bh,bw,bh);\n    for(let r=1;r<4;r++){ const yy=GROUND-bh*(r/4);\n      ctx.beginPath(); ctx.moveTo(bx,yy); ctx.lineTo(bx+bw,yy); ctx.stroke(); }\n  }\n  ctx.restore();\n}",
+  "cell_scale": {
+    "sp1f2": 1.25,
+    "sp2f0": 1.22,
+    "sp2f2": 1.6,
+    "sp3f0": 1.16,
+    "sp3f2": 1.1,
+    "superf0": 1.16,
+    "superf1": 1.6,
+    "superf2": 2.0,
+    "super": 2.0
+  }
+}

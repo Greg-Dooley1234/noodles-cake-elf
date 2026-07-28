@@ -107,6 +107,75 @@ def cmd_voices(cfg):
     return 0
 
 
+# ------------------------------------------------------------------ scale --
+
+def cmd_scale(cfg):
+    """Render every pose at engine scale so wrong-sized cells are obvious.
+
+    The generators shrink the character when a building or explosion has to
+    share the square frame, which makes a fighter appear to grow and shrink
+    mid-move. No automatic measure was trustworthy enough to apply unattended
+    (head-width is thrown by raised arms and beards; body-area calls a tucked
+    mid-air pose "small" when it is correct), so this makes the error visible
+    and the fix a single number.
+
+    Read off the ratio against the guide bars and put it in "cell_scale":
+    a frame drawn at two-thirds size needs about 1.5.
+    """
+    from ncebuild.chroma import alpha_bbox
+    cells = cut_all(cfg)
+    norms, _ = spr.scale_norms(cells, cfg.get("scale_refs"))
+    cscale = cfg.get("cell_scale") or {}
+    anchor_mode = cfg.get("anchor_mode", "dark")
+
+    rendered = []
+    for pose, ref in cfg["poses"].items():
+        tag, r, c = ref[0], int(ref[1]), int(ref[2])
+        flip = bool(ref[3]) if len(ref) > 3 else False
+        crop = sheets.drop_strays(cells[tag][(r, c)])
+        _, m = spr.make_sprite(crop, norms.get(tag, 1.0), anchor_mode, flip,
+                               cell_scale=float(cscale.get(pose, 1.0)))
+        bb = alpha_bbox(crop if not flip else crop[:, ::-1])
+        img = Image.fromarray((crop if not flip else crop[:, ::-1])[bb[1]:bb[3], bb[0]:bb[2]])
+        rendered.append((pose, img, m))
+
+    # engine maths: everything is drawn at spriteScale/k
+    idle = dict((p, m) for p, _, m in rendered).get("idle0") or rendered[0][2]
+    ss = 252.0 / (idle[1] / (idle[4] or 1))
+
+    CW, per_row = 260, 8
+    rows = (len(rendered) + per_row - 1) // per_row
+    tiles = []
+    for pose, img, m in rendered:
+        s = ss / (m[4] or 1)
+        tiles.append((pose, img.resize((max(1, int(m[0] * s)), max(1, int(m[1] * s))),
+                                       Image.LANCZOS), m[2] * s, m[3] * s))
+    above = int(max(t[3] for t in tiles)) + 26
+    RH = above + 60
+    cv = Image.new("RGBA", (CW * per_row, RH * rows), (44, 46, 52, 255))
+    dr = ImageDraw.Draw(cv)
+    for i, (pose, im, ax, ay) in enumerate(tiles):
+        rw, cl = divmod(i, per_row)
+        ox, oy = cl * CW, rw * RH
+        gy = oy + above
+        dr.line([(ox, gy), (ox + CW, gy)], fill=(90, 170, 90, 255))
+        # guide bars at the reference standing height (252px) and +/-12%
+        for frac, col in ((1.0, (250, 220, 90, 170)), (0.88, (250, 120, 120, 110)),
+                          (1.12, (250, 120, 120, 110))):
+            yy = gy - 252 * frac
+            dr.line([(ox + 6, yy), (ox + CW - 6, yy)], fill=col)
+        cv.alpha_composite(im, (int(ox + CW / 2 - ax), int(gy - ay)))
+        dr.text((ox + 5, oy + 4), pose, fill=(255, 255, 0, 255))
+    out = os.path.join(cfg["_dir"], "_probe_" + cfg["id"], "scale_check.png")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    cv.convert("RGB").save(out)
+    print("wrote", out)
+    print("\nYellow line = a standing fighter's height. Any pose whose body is well")
+    print("short of it (and is not crouching/airborne on purpose) needs a")
+    print('"cell_scale" entry, e.g.  "cell_scale": {"superf1": 1.5}')
+    return 0
+
+
 # ------------------------------------------------------------------ build --
 
 def cmd_build(cfg):
@@ -128,13 +197,15 @@ def cmd_build(cfg):
         if tag not in cells or (r, c) not in cells[tag]:
             raise SystemExit("pose %s -> %s r%d c%d does not exist on that sheet"
                              % (pose, tag, r, c))
-        sig = (tag, r, c, flip)
+        cscale = float((cfg.get("cell_scale") or {}).get(pose, 1.0))
+        sig = (tag, r, c, flip, cscale)
         if sig in seen:
             poses[pose] = seen[sig]
             continue
         key = "%s_%s" % (fid, pose)
         crop = sheets.drop_strays(cells[tag][(r, c)])
-        uri, m = spr.make_sprite(crop, norms.get(tag, 1.0), anchor_mode, flip)
+        uri, m = spr.make_sprite(crop, norms.get(tag, 1.0), anchor_mode, flip,
+                                 cell_scale=cscale)
         sprite_uris[key] = uri
         meta[key] = m
         poses[pose] = key
@@ -237,7 +308,7 @@ def cmd_verify(fid):
 
 def main():
     ap = argparse.ArgumentParser(description="Add a fighter to Noodles, Cake & Elf")
-    ap.add_argument("cmd", choices=["probe", "build", "verify", "voices"])
+    ap.add_argument("cmd", choices=["probe", "build", "verify", "voices", "scale"])
     ap.add_argument("target", help="config path (probe/build/voices) or fighter id (verify)")
     a = ap.parse_args()
     if a.cmd == "verify":
@@ -247,6 +318,8 @@ def main():
         return cmd_probe(cfg)
     if a.cmd == "voices":
         return cmd_voices(cfg)
+    if a.cmd == "scale":
+        return cmd_scale(cfg)
     return cmd_build(cfg)
 
 

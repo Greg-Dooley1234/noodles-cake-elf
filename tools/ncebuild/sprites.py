@@ -96,8 +96,18 @@ def face_dir(crop):
     return 0 if abs(off) < (r - l) * 0.03 else (1 if off > 0 else -1)
 
 
-def make_sprite(crop, scale_norm=1.0, anchor_mode="dark", flip=False, quality=88):
-    """One cell -> (data-uri, meta). scale_norm corrects genuine cross-sheet size."""
+def make_sprite(crop, scale_norm=1.0, anchor_mode="dark", flip=False, quality=88,
+                cell_scale=1.0):
+    """One cell -> (data-uri, meta).
+
+    scale_norm  corrects a whole sheet drawn at a different size.
+    cell_scale  corrects ONE cell where the generator shrank the character to
+                fit a building/explosion into the square frame — the usual cause
+                of a fighter appearing to shrink and grow mid-move. >1 enlarges.
+                Found by eye with `add_fighter.py scale <cfg>`; no automatic
+                measure was reliable enough to apply unattended (a tucked
+                mid-air pose looks "small" by every metric but is correct).
+    """
     if flip:
         crop = crop[:, ::-1]
     bb = alpha_bbox(crop)
@@ -113,7 +123,10 @@ def make_sprite(crop, scale_norm=1.0, anchor_mode="dark", flip=False, quality=88
     buf = io.BytesIO()
     Image.fromarray(crop).save(buf, "WEBP", quality=quality, method=6)
     uri = "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode()
-    return uri, [w, h, ax, ay, round(d * scale_norm, 4)]
+    # the engine draws at spriteScale/k, so dividing k by cell_scale enlarges
+    # this one cell without touching any other
+    k = d * scale_norm / max(0.05, float(cell_scale))
+    return uri, [w, h, ax, ay, round(k, 4)]
 
 
 def scale_norms(cells_by_sheet, refs=None, tolerance=0.06, sane=(0.75, 1.34)):
