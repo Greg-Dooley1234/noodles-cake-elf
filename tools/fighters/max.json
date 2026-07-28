@@ -1,0 +1,404 @@
+{
+  "_comment": "Worked example \u2014 MAX, the 10th fighter. Copy this file to add your own. Every field is explained in tools/README.md. Scale is measured automatically (median head width per sheet); add \"scale_refs\" only to override.",
+  "id": "max",
+  "green_costume": false,
+  "anchor_mode": "dark",
+  "sheet_rows": 3,
+  "sheets": {
+    "A": "assets/Max/Image Sprites/e6a0efdb-001e-41bf-889d-b039592d51ed.png",
+    "B": "assets/Max/Image Sprites/f7da717f-2b7b-4f71-8b3d-edb4b2dbff2d.png",
+    "C": "assets/Max/Image Sprites/c554e113-7f40-4c8f-9cc7-3d3cea5cc658.png",
+    "D": "assets/Max/Image Sprites/c0d532ac-2319-421e-b22a-964d2de76ab5.png",
+    "E": "assets/Max/Image Sprites/c2bb70ae-8666-4a24-a6ca-add14852ae65.png",
+    "F": "assets/Max/Image Sprites/bc49554b-0088-48c5-88fb-357a588a0f62.png",
+    "G": "assets/Max/Image Sprites/7da835b3-63aa-4f14-bd6e-ab613aaa525c.png"
+  },
+  "card": "assets/Max/Card/4c203a51-4bef-45c0-a7ea-89444a94ce1c.png",
+  "stage": "assets/Max/Background/9a8de666-7f86-4626-83da-a2c9a3fe813f.png",
+  "finish": "assets/Max/Finishing Scene/b47cbceb-c088-4b85-b250-11b095c4bb52.png",
+  "poses": {
+    "idle0": [
+      "A",
+      0,
+      0
+    ],
+    "idle1": [
+      "A",
+      0,
+      1
+    ],
+    "idle2": [
+      "B",
+      0,
+      0
+    ],
+    "idle3": [
+      "B",
+      0,
+      1
+    ],
+    "walk0": [
+      "A",
+      1,
+      0
+    ],
+    "walk1": [
+      "A",
+      1,
+      1
+    ],
+    "walk2": [
+      "A",
+      1,
+      2
+    ],
+    "walk3": [
+      "A",
+      1,
+      3
+    ],
+    "walk4": [
+      "A",
+      1,
+      4
+    ],
+    "walk5": [
+      "A",
+      1,
+      5
+    ],
+    "crouch": [
+      "A",
+      2,
+      3
+    ],
+    "block": [
+      "F",
+      1,
+      5
+    ],
+    "blockLow": [
+      "B",
+      0,
+      3
+    ],
+    "jumpUp": [
+      "A",
+      2,
+      4
+    ],
+    "jumpDn": [
+      "A",
+      2,
+      5
+    ],
+    "jumpBUp": [
+      "D",
+      2,
+      1
+    ],
+    "jumpBDn": [
+      "B",
+      1,
+      5
+    ],
+    "atkL": [
+      "B",
+      0,
+      4
+    ],
+    "atkH": [
+      "D",
+      2,
+      2
+    ],
+    "clow": [
+      "B",
+      1,
+      1
+    ],
+    "atkA": [
+      "B",
+      1,
+      4
+    ],
+    "hit": [
+      "E",
+      0,
+      0
+    ],
+    "launch": [
+      "B",
+      2,
+      2
+    ],
+    "down": [
+      "B",
+      2,
+      4
+    ],
+    "ko": [
+      "E",
+      0,
+      5
+    ],
+    "win": [
+      "B",
+      2,
+      5
+    ],
+    "spWind": [
+      "D",
+      0,
+      3
+    ],
+    "spActive": [
+      "D",
+      0,
+      4
+    ],
+    "sp1f0": [
+      "D",
+      0,
+      2
+    ],
+    "sp1f1": [
+      "D",
+      0,
+      3
+    ],
+    "sp1f2": [
+      "D",
+      0,
+      4
+    ],
+    "sp1f3": [
+      "D",
+      1,
+      0
+    ],
+    "sp2f0": [
+      "E",
+      1,
+      1
+    ],
+    "sp2f1": [
+      "E",
+      1,
+      2
+    ],
+    "sp2f2": [
+      "E",
+      1,
+      3
+    ],
+    "sp2f3": [
+      "E",
+      1,
+      4
+    ],
+    "sp2f4": [
+      "E",
+      2,
+      0
+    ],
+    "sp3f0": [
+      "F",
+      1,
+      1
+    ],
+    "sp3f1": [
+      "F",
+      1,
+      0
+    ],
+    "sp3f2": [
+      "G",
+      2,
+      3
+    ],
+    "sp4f0": [
+      "F",
+      0,
+      0
+    ],
+    "sp4f1": [
+      "F",
+      0,
+      2
+    ],
+    "sp4f2": [
+      "F",
+      2,
+      3
+    ],
+    "sp4f3": [
+      "G",
+      1,
+      1
+    ],
+    "superf0": [
+      "C",
+      0,
+      4
+    ],
+    "superf1": [
+      "C",
+      0,
+      5
+    ],
+    "superf2": [
+      "C",
+      1,
+      1
+    ],
+    "superf3": [
+      "G",
+      2,
+      0
+    ],
+    "superf4": [
+      "G",
+      2,
+      1
+    ],
+    "superf5": [
+      "C",
+      1,
+      2
+    ],
+    "superf6": [
+      "C",
+      1,
+      5
+    ],
+    "super": [
+      "C",
+      1,
+      2
+    ]
+  },
+  "anim": {
+    "walk": 6,
+    "idle": 4,
+    "sp": {
+      "sp1": 4,
+      "sp2": 5,
+      "sp3": 3,
+      "sp4": 4,
+      "super": 7
+    }
+  },
+  "sp_phase": {
+    "sp1": [
+      2,
+      1,
+      1
+    ],
+    "sp2": [
+      3,
+      1,
+      1
+    ],
+    "sp3": [
+      1,
+      1,
+      1
+    ],
+    "sp4": [
+      2,
+      1,
+      1
+    ],
+    "super": [
+      2,
+      3,
+      2
+    ]
+  },
+  "chars": "max:{\n    id:'max',name:'MAX',title:'The Final Cut',\n    skin:'#e5b795',skinD:'#c2926f',hair:'#4a3526',cloth:'#26262c',clothD:'#151519',\n    accent:'#6a4a2e',glow:'#4ad8ff',glow2:'#ffbe3a',iris:'#4a6a7a',voice:0.92,\n    leg1:45,leg2:45,arm1:33,arm2:33,torso:54,headR:16,limbW:14,torsoW:21,hipH:82,\n    speed:250,jumpV:665,hp:1040,weight:1.08,\n    bob:2.3,stance:20,\n  },",
+  "moves": "    light:{name:'Lens Jab',anim:'jab',dmg:36,startup:.06,active:.07,recover:.11,range:64,kx:135,stun:.27,meterGain:5},\n    heavy:{name:'Tripod Kick',anim:'kick',dmg:76,startup:.13,active:.11,recover:.21,range:104,kx:245,stun:.42,meterGain:8},\n    clight:{name:'Cable Sweep',anim:'low',dmg:41,startup:.08,active:.08,recover:.15,range:80,kx:115,stun:.29,low:true,meterGain:5},\n    air:{name:'Crane Drop',anim:'air',dmg:68,startup:.08,active:.2,recover:.13,range:72,kx:190,stun:.35,overhead:true,meterGain:6},\n    sp1:{name:'FLASH BURST',anim:'shoot',dmg:0,startup:.16,active:.07,recover:.26,range:0,special:true,airOk:true,meterGain:7,\n      onActive(f){const air=!f.onGround;shootProj(f,{type:'flash',vx:640,vy:air?260:0,dmg:62,kx:190,stun:.35,y:air?-44:-58});\n        addFlash('#eaffff',.22);SFX.shoot();}},\n    sp2:{name:'REEL THROW',anim:'shoot',dmg:0,startup:.24,active:.1,recover:.3,range:0,special:true,meterGain:8,\n      onActive(f){shootProj(f,{type:'reel',vx:430,vy:-60,g:420,dmg:74,kx:230,ky:-150,stun:.42,y:-64});SFX.shoot();}},\n    sp3:{name:'BOOM DROP',anim:'slam',dmg:94,startup:.26,active:.14,recover:.34,range:104,kx:250,ky:-250,stun:.55,special:true,chip:true,\n      low:true,knockdown:true,meterGain:10,\n      onActive(f){addShake(9,.3);groundDust(f.x+f.facing*70,14,1.1);SFX.hitH();}},\n    sp4:{name:'DRONE STRIKE',anim:'straight',fx:'leafSlash',dmg:82,startup:.1,active:.16,recover:.32,range:80,kx:120,ky:-450,stun:.52,special:true,chip:true,invuln:.2,knockdown:true,meterGain:9},\n    super:{name:'FINAL CUT',anim:'volley',dmg:0,startup:.42,active:.34,recover:.5,range:0,special:true,isSuper:true,\n      onActive(f){maxFinalCut(f);}},",
+  "callouts": "{ 'FLASH BURST':\"Rolling!\", 'REEL THROW':\"Stay in frame!\", 'BOOM DROP':\"Boom!\", 'DRONE STRIKE':\"Focus!\",\n    super:[\"Final cut!\",\"And action!\"], win:[\"That's a wrap!\",\"Perfect take!\",\"Cut!\"] }",
+  "theme": "{bpm:100,swing:0.08,drums:'four',pad:'saw',lead:'saw',\n    roots:[36.71,43.65,32.7,49],\n    chords:[[293.66,349.23,440],[349.23,440,523.25],[261.63,329.63,392],[293.66,392,466.16]],\n    melA:[[0,587.33],[4,698.46],[8,587.33],[12,440],[16,523.25],[20,587.33],[24,466.16],[28,440]],\n    melB:[[0,587.33],[4,880],[8,783.99],[12,698.46],[16,587.33],[22,698.46],[26,880],[30,1046.5]]}",
+  "voice_dir": "assets/Max/Voice Call Outs",
+  "voice_clips": {
+    "1": [
+      "WhatsApp Ptt 2026-07-27 at 18.12.13.ogg",
+      0.0,
+      1.45,
+      "And action!"
+    ],
+    "2": [
+      "WhatsApp Ptt 2026-07-27 at 18.11.44.ogg",
+      0.0,
+      1.55,
+      "Rolling!"
+    ],
+    "3": [
+      "WhatsApp Ptt 2026-07-27 at 18.11.39.ogg",
+      0.0,
+      1.9,
+      "Stay in frame!"
+    ],
+    "4": [
+      "WhatsApp Ptt 2026-07-27 at 18.11.49.ogg",
+      0.0,
+      1.35,
+      "Focus."
+    ],
+    "5": [
+      "WhatsApp Ptt 2026-07-27 at 18.12.00.ogg",
+      0.05,
+      1.75,
+      "Cut!"
+    ],
+    "6": [
+      "WhatsApp Ptt 2026-07-27 at 18.12.08.ogg",
+      1.2,
+      1.95,
+      "Boom!"
+    ],
+    "7": [
+      "WhatsApp Ptt 2026-07-27 at 18.12.27.ogg",
+      0.0,
+      1.45,
+      "Final cut."
+    ],
+    "8": [
+      "WhatsApp Ptt 2026-07-27 at 18.12.34.ogg",
+      0.0,
+      1.8,
+      "That's a wrap."
+    ],
+    "9": [
+      "WhatsApp Ptt 2026-07-27 at 18.12.40.ogg",
+      0.5,
+      1.6,
+      "Perfect take."
+    ],
+    "10": [
+      "WhatsApp Ptt 2026-07-27 at 18.11.34.ogg",
+      0.05,
+      1.7,
+      "Lights out."
+    ]
+  },
+  "clipfor": {
+    "FLASH BURST": [
+      "max_2",
+      "max_1"
+    ],
+    "REEL THROW": "max_3",
+    "BOOM DROP": [
+      "max_6",
+      "max_10"
+    ],
+    "DRONE STRIKE": "max_4",
+    "super": "max_7",
+    "win": [
+      "max_8",
+      "max_9",
+      "max_5"
+    ]
+  }
+}
